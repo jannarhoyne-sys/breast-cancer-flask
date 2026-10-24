@@ -2,27 +2,109 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Breast Cancer Prediction</title>
+
+    <!-- Font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- stylesheet in the static folder -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Breast Cancer Classification</h1>
-    <p>Enter each cell measurement (1–10):</p>
+<div class="container">
 
-    <!-- The form sends the 9 values to the /predict route in app.py -->
-    <form action="{{ url_for('predict') }}" method="POST">
-        Clump Thickness: <input type="number" name="clump_thickness" min="1" max="10" required><br>
-        Uniformity of Cell Size: <input type="number" name="cell_size" min="1" max="10" required><br>
-        Uniformity of Cell Shape: <input type="number" name="cell_shape" min="1" max="10" required><br>
-        Marginal Adhesion: <input type="number" name="marginal_adhesion" min="1" max="10" required><br>
-        Single Epithelial Cell Size: <input type="number" name="epithelial_size" min="1" max="10" required><br>
-        Bare Nuclei: <input type="number" name="bare_nuclei" min="1" max="10" required><br>
-        Bland Chromatin: <input type="number" name="bland_chromatin" min="1" max="10" required><br>
-        Normal Nucleoli: <input type="number" name="normal_nucleoli" min="1" max="10" required><br>
-        Mitoses: <input type="number" name="mitoses" min="1" max="10" required><br>
-        <input type="submit" value="Submit">
-    </form>
+    <header>
+        <h1>Breast Cancer Classification</h1>
+        <p>Kernel SVM model (96.49% accuracy) trained on the UCI Breast Cancer Wisconsin dataset.
+           Rate each measurement from 1 (normal) to 10 (most abnormal).</p>
+    </header>
 
-    <!-- app.py fills this in after a prediction -->
-    <h2>My prediction: {{ predict }}</h2>
+    <div class="card">
+        <form action="{{ url_for('predict') }}" method="POST">
+            <div class="grid">
+
+                <div class="field">
+                    <label for="clump_thickness">Clump Thickness</label>
+                    <input type="number" id="clump_thickness" name="clump_thickness" min="1" max="10" required
+                           value="{{ request.form.get('clump_thickness', '') }}">
+                    <small>Thickness of cell clusters</small>
+                </div>
+
+                <div class="field">
+                    <label for="cell_size">Uniformity of Cell Size</label>
+                    <input type="number" id="cell_size" name="cell_size" min="1" max="10" required
+                           value="{{ request.form.get('cell_size', '') }}">
+                    <small>How similar the cell sizes are</small>
+                </div>
+
+                <div class="field">
+                    <label for="cell_shape">Uniformity of Cell Shape</label>
+                    <input type="number" id="cell_shape" name="cell_shape" min="1" max="10" required
+                           value="{{ request.form.get('cell_shape', '') }}">
+                    <small>How similar the cell shapes are</small>
+                </div>
+
+                <div class="field">
+                    <label for="marginal_adhesion">Marginal Adhesion</label>
+                    <input type="number" id="marginal_adhesion" name="marginal_adhesion" min="1" max="10" required
+                           value="{{ request.form.get('marginal_adhesion', '') }}">
+                    <small>How well cells stick together</small>
+                </div>
+
+                <div class="field">
+                    <label for="epithelial_size">Single Epithelial Cell Size</label>
+                    <input type="number" id="epithelial_size" name="epithelial_size" min="1" max="10" required
+                           value="{{ request.form.get('epithelial_size', '') }}">
+                    <small>Size of individual surface cells</small>
+                </div>
+
+                <div class="field">
+                    <label for="bare_nuclei">Bare Nuclei</label>
+                    <input type="number" id="bare_nuclei" name="bare_nuclei" min="1" max="10" required
+                           value="{{ request.form.get('bare_nuclei', '') }}">
+                    <small>Nuclei without surrounding cell body</small>
+                </div>
+
+                <div class="field">
+                    <label for="bland_chromatin">Bland Chromatin</label>
+                    <input type="number" id="bland_chromatin" name="bland_chromatin" min="1" max="10" required
+                           value="{{ request.form.get('bland_chromatin', '') }}">
+                    <small>Texture of the nucleus</small>
+                </div>
+
+                <div class="field">
+                    <label for="normal_nucleoli">Normal Nucleoli</label>
+                    <input type="number" id="normal_nucleoli" name="normal_nucleoli" min="1" max="10" required
+                           value="{{ request.form.get('normal_nucleoli', '') }}">
+                    <small>Visibility of small structures in the nucleus</small>
+                </div>
+
+                <div class="field">
+                    <label for="mitoses">Mitoses</label>
+                    <input type="number" id="mitoses" name="mitoses" min="1" max="10" required
+                           value="{{ request.form.get('mitoses', '') }}">
+                    <small>How often cells are dividing</small>
+                </div>
+
+            </div>
+            <button type="submit">Predict</button>
+        </form>
+
+        <!-- green for Benign, red for Malignant -->
+        {% if predict %}
+        <div class="result {{ 'malignant' if predict == 'Malignant' else 'benign' }}">
+            Prediction: {{ predict }}
+        </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        For educational purposes only, not medical advice. ·
+        <a href="https://github.com/jannarhoyne-sys/breast-cancer-flask">View on GitHub</a>
+        <br>
+        J.Hoyne ANA680
+    </footer>
+
+</div>
 </body>
 </html>
