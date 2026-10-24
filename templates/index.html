@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Breast Cancer Prediction</title>
+</head>
+<body>
+    <h1>Breast Cancer Classification</h1>
+    <p>Enter each cell measurement (1–10):</p>
+
+    <!-- The form sends the 9 values to the /predict route in app.py -->
+    <form action="{{ url_for('predict') }}" method="POST">
+        Clump Thickness: <input type="number" name="clump_thickness" min="1" max="10" required><br>
+        Uniformity of Cell Size: <input type="number" name="cell_size" min="1" max="10" required><br>
+        Uniformity of Cell Shape: <input type="number" name="cell_shape" min="1" max="10" required><br>
+        Marginal Adhesion: <input type="number" name="marginal_adhesion" min="1" max="10" required><br>
+        Single Epithelial Cell Size: <input type="number" name="epithelial_size" min="1" max="10" required><br>
+        Bare Nuclei: <input type="number" name="bare_nuclei" min="1" max="10" required><br>
+        Bland Chromatin: <input type="number" name="bland_chromatin" min="1" max="10" required><br>
+        Normal Nucleoli: <input type="number" name="normal_nucleoli" min="1" max="10" required><br>
+        Mitoses: <input type="number" name="mitoses" min="1" max="10" required><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- app.py fills this in after a prediction -->
+    <h2>My prediction: {{ predict }}</h2>
+</body>
+</html>
